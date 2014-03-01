@@ -1,0 +1,709 @@
+   0  $accept : %entry% $end
+
+   1  main : expr EOEX
+
+   2  expr : simple_expr
+   3       | simple_expr simple_expr_list
+   4       | expr PLUS expr
+   5       | expr MINUS expr
+   6       | expr AND expr
+   7       | expr OR expr
+   8       | NOT expr
+   9       | expr EQUAL expr
+  10       | FUNCTION ident_decl GOESTO expr
+  11       | LET REC ident_decl ident_decl EQUAL expr IN expr
+  12       | IF expr THEN expr ELSE expr
+
+  13  simple_expr : INT
+  14              | BOOL
+  15              | ident_usage
+  16              | LPAREN expr RPAREN
+
+  17  simple_expr_list : simple_expr
+  18                   | simple_expr_list simple_expr
+
+  19  ident_usage : ident_decl
+
+  20  ident_decl : IDENT
+
+  21  %entry% : '\001' main
+
+state 0
+	$accept : . %entry% $end  (0)
+
+	'\001'  shift 1
+	.  error
+
+	%entry%  goto 2
+
+
+state 1
+	%entry% : '\001' . main  (21)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	main  goto 11
+	expr  goto 12
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 2
+	$accept : %entry% . $end  (0)
+
+	$end  accept
+
+
+state 3
+	simple_expr : BOOL .  (14)
+
+	.  reduce 14
+
+
+state 4
+	expr : FUNCTION . ident_decl GOESTO expr  (10)
+
+	IDENT  shift 5
+	.  error
+
+	ident_decl  goto 16
+
+
+state 5
+	ident_decl : IDENT .  (20)
+
+	.  reduce 20
+
+
+state 6
+	expr : IF . expr THEN expr ELSE expr  (12)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 17
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 7
+	simple_expr : INT .  (13)
+
+	.  reduce 13
+
+
+state 8
+	expr : LET . REC ident_decl ident_decl EQUAL expr IN expr  (11)
+
+	REC  shift 18
+	.  error
+
+
+state 9
+	simple_expr : LPAREN . expr RPAREN  (16)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 19
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 10
+	expr : NOT . expr  (8)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 20
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 11
+	%entry% : '\001' main .  (21)
+
+	.  reduce 21
+
+
+state 12
+	main : expr . EOEX  (1)
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+
+	AND  shift 21
+	EOEX  shift 22
+	EQUAL  shift 23
+	MINUS  shift 24
+	OR  shift 25
+	PLUS  shift 26
+	.  error
+
+
+state 13
+	expr : simple_expr .  (2)
+	expr : simple_expr . simple_expr_list  (3)
+
+	BOOL  shift 3
+	IDENT  shift 5
+	INT  shift 7
+	LPAREN  shift 9
+	AND  reduce 2
+	ELSE  reduce 2
+	EOEX  reduce 2
+	EQUAL  reduce 2
+	IN  reduce 2
+	MINUS  reduce 2
+	OR  reduce 2
+	PLUS  reduce 2
+	RPAREN  reduce 2
+	THEN  reduce 2
+
+	simple_expr  goto 27
+	simple_expr_list  goto 28
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 14
+	ident_usage : ident_decl .  (19)
+
+	.  reduce 19
+
+
+state 15
+	simple_expr : ident_usage .  (15)
+
+	.  reduce 15
+
+
+state 16
+	expr : FUNCTION ident_decl . GOESTO expr  (10)
+
+	GOESTO  shift 29
+	.  error
+
+
+state 17
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+	expr : IF expr . THEN expr ELSE expr  (12)
+
+	AND  shift 21
+	EQUAL  shift 23
+	MINUS  shift 24
+	OR  shift 25
+	PLUS  shift 26
+	THEN  shift 30
+	.  error
+
+
+state 18
+	expr : LET REC . ident_decl ident_decl EQUAL expr IN expr  (11)
+
+	IDENT  shift 5
+	.  error
+
+	ident_decl  goto 31
+
+
+state 19
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+	simple_expr : LPAREN expr . RPAREN  (16)
+
+	AND  shift 21
+	EQUAL  shift 23
+	MINUS  shift 24
+	OR  shift 25
+	PLUS  shift 26
+	RPAREN  shift 32
+	.  error
+
+
+state 20
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : NOT expr .  (8)
+	expr : expr . EQUAL expr  (9)
+
+	.  reduce 8
+
+
+state 21
+	expr : expr AND . expr  (6)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 33
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 22
+	main : expr EOEX .  (1)
+
+	.  reduce 1
+
+
+state 23
+	expr : expr EQUAL . expr  (9)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 34
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 24
+	expr : expr MINUS . expr  (5)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 35
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 25
+	expr : expr OR . expr  (7)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 36
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 26
+	expr : expr PLUS . expr  (4)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 37
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 27
+	simple_expr_list : simple_expr .  (17)
+
+	.  reduce 17
+
+
+state 28
+	expr : simple_expr simple_expr_list .  (3)
+	simple_expr_list : simple_expr_list . simple_expr  (18)
+
+	BOOL  shift 3
+	IDENT  shift 5
+	INT  shift 7
+	LPAREN  shift 9
+	AND  reduce 3
+	ELSE  reduce 3
+	EOEX  reduce 3
+	EQUAL  reduce 3
+	IN  reduce 3
+	MINUS  reduce 3
+	OR  reduce 3
+	PLUS  reduce 3
+	RPAREN  reduce 3
+	THEN  reduce 3
+
+	simple_expr  goto 38
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 29
+	expr : FUNCTION ident_decl GOESTO . expr  (10)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 39
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 30
+	expr : IF expr THEN . expr ELSE expr  (12)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 40
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 31
+	expr : LET REC ident_decl . ident_decl EQUAL expr IN expr  (11)
+
+	IDENT  shift 5
+	.  error
+
+	ident_decl  goto 41
+
+
+state 32
+	simple_expr : LPAREN expr RPAREN .  (16)
+
+	.  reduce 16
+
+
+state 33
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr AND expr .  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+
+	AND  shift 21
+	EQUAL  shift 23
+	MINUS  shift 24
+	PLUS  shift 26
+	ELSE  reduce 6
+	EOEX  reduce 6
+	IN  reduce 6
+	OR  reduce 6
+	RPAREN  reduce 6
+	THEN  reduce 6
+
+
+state 34
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+	expr : expr EQUAL expr .  (9)
+
+	MINUS  shift 24
+	PLUS  shift 26
+	AND  reduce 9
+	ELSE  reduce 9
+	EOEX  reduce 9
+	EQUAL  reduce 9
+	IN  reduce 9
+	OR  reduce 9
+	RPAREN  reduce 9
+	THEN  reduce 9
+
+
+state 35
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr MINUS expr .  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+
+	.  reduce 5
+
+
+state 36
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr OR expr .  (7)
+	expr : expr . EQUAL expr  (9)
+
+	AND  shift 21
+	EQUAL  shift 23
+	MINUS  shift 24
+	OR  shift 25
+	PLUS  shift 26
+	ELSE  reduce 7
+	EOEX  reduce 7
+	IN  reduce 7
+	RPAREN  reduce 7
+	THEN  reduce 7
+
+
+state 37
+	expr : expr . PLUS expr  (4)
+	expr : expr PLUS expr .  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+
+	.  reduce 4
+
+
+state 38
+	simple_expr_list : simple_expr_list simple_expr .  (18)
+
+	.  reduce 18
+
+
+state 39
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+	expr : FUNCTION ident_decl GOESTO expr .  (10)
+
+	AND  shift 21
+	EQUAL  shift 23
+	MINUS  shift 24
+	OR  shift 25
+	PLUS  shift 26
+	ELSE  reduce 10
+	EOEX  reduce 10
+	IN  reduce 10
+	RPAREN  reduce 10
+	THEN  reduce 10
+
+
+state 40
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+	expr : IF expr THEN expr . ELSE expr  (12)
+
+	AND  shift 21
+	ELSE  shift 42
+	EQUAL  shift 23
+	MINUS  shift 24
+	OR  shift 25
+	PLUS  shift 26
+	.  error
+
+
+state 41
+	expr : LET REC ident_decl ident_decl . EQUAL expr IN expr  (11)
+
+	EQUAL  shift 43
+	.  error
+
+
+state 42
+	expr : IF expr THEN expr ELSE . expr  (12)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 44
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 43
+	expr : LET REC ident_decl ident_decl EQUAL . expr IN expr  (11)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 45
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 44
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+	expr : IF expr THEN expr ELSE expr .  (12)
+
+	AND  shift 21
+	EQUAL  shift 23
+	MINUS  shift 24
+	OR  shift 25
+	PLUS  shift 26
+	ELSE  reduce 12
+	EOEX  reduce 12
+	IN  reduce 12
+	RPAREN  reduce 12
+	THEN  reduce 12
+
+
+state 45
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+	expr : LET REC ident_decl ident_decl EQUAL expr . IN expr  (11)
+
+	AND  shift 21
+	EQUAL  shift 23
+	IN  shift 46
+	MINUS  shift 24
+	OR  shift 25
+	PLUS  shift 26
+	.  error
+
+
+state 46
+	expr : LET REC ident_decl ident_decl EQUAL expr IN . expr  (11)
+
+	BOOL  shift 3
+	FUNCTION  shift 4
+	IDENT  shift 5
+	IF  shift 6
+	INT  shift 7
+	LET  shift 8
+	LPAREN  shift 9
+	NOT  shift 10
+	.  error
+
+	expr  goto 47
+	simple_expr  goto 13
+	ident_decl  goto 14
+	ident_usage  goto 15
+
+
+state 47
+	expr : expr . PLUS expr  (4)
+	expr : expr . MINUS expr  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . EQUAL expr  (9)
+	expr : LET REC ident_decl ident_decl EQUAL expr IN expr .  (11)
+
+	AND  shift 21
+	EQUAL  shift 23
+	MINUS  shift 24
+	OR  shift 25
+	PLUS  shift 26
+	ELSE  reduce 11
+	EOEX  reduce 11
+	IN  reduce 11
+	RPAREN  reduce 11
+	THEN  reduce 11
+
+
+29 terminals, 8 nonterminals
+22 grammar rules, 48 states
