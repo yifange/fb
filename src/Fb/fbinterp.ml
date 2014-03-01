@@ -49,9 +49,7 @@ let rec subst ident expr fbody = let sub = subst ident expr in
 
 let rec eval e = if check_closed e then
   match e with
-    Int x -> Int x
-  | Bool x -> Bool x
-  | Var _ -> raise NotClosed
+    Var _ -> raise NotClosed
   | Not e ->
       (match eval e with
            Bool x -> Bool (not x)
@@ -73,7 +71,6 @@ let rec eval e = if check_closed e then
            (Int x, Int y) -> Int (x - y)
          | _ -> raise TypeMismatch
       )
-  | Function (i, e) -> Function(i, e)
   | Plus (e1, e2) -> 
       (match (eval e1, eval e2) with
            (Int x, Int y) -> Int (x + y)
@@ -101,7 +98,7 @@ let rec eval e = if check_closed e then
   | LetRec (f, x, e1, e2) ->
       let inner = subst f (Function (x, (LetRec (f, x, e1, Appl (Var f, Var x))))) e1 in
         eval (subst f (Function (x, inner)) e2)
-
+  | _ -> e
  else raise NotClosed
 ;;
 
