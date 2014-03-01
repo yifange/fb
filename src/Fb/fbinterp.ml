@@ -40,7 +40,7 @@ let rec subst ident expr fbody = let sub = subst ident expr in
 	| Int x -> Int x
 	| Bool x -> Bool x
   | Appl (e1, e2) -> Appl (sub e1, sub e2)
-  | Function (i, e) -> if i = ident then sub e else Function (i, sub e)
+  | Function (i, e) -> if i = ident then fbody else Function (i, sub e)
   | LetRec (i1, i2, e1, e2) -> 
         if ident != i1 && ident != i2 then LetRec (i1, i2, sub e1, sub e2)
         else if ident = i2 then LetRec (i1, i2, e1, sub e2)
