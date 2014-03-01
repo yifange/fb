@@ -4,7 +4,6 @@ open Fbast;;
  * Replace this with your interpreter code.
  *)
 exception TypeMismatch;;
-exception NotImplemented;;
 exception NotClosed;;
 
 let check_closed expr = 
@@ -47,59 +46,60 @@ let rec subst ident expr fbody = let sub = subst ident expr in
         else LetRec (i1, i2, e1, e2)
 ;;
 
-let rec eval e = if check_closed e then
-  match e with
-    Var _ -> raise NotClosed
-  | Not e ->
-      (match eval e with
-           Bool x -> Bool (not x)
-         | _ -> raise TypeMismatch
-      )
-  | Equal (e1, e2) ->
-      (match (eval e1, eval e2) with
-           (Int x, Int y) -> Bool (x = y)
-         | _ -> raise TypeMismatch
-      )
-  | If (e1, e2, e3) ->
-      (match eval e1 with
-          Bool true -> eval e2
-        | Bool false -> eval e3
-				| _ -> raise TypeMismatch
-      )
-  | Minus (e1, e2) -> 
-      (match (eval e1, eval e2) with
-           (Int x, Int y) -> Int (x - y)
-         | _ -> raise TypeMismatch
-      )
-  | Plus (e1, e2) -> 
-      (match (eval e1, eval e2) with
-           (Int x, Int y) -> Int (x + y)
-         | _ -> raise TypeMismatch
-      )
-  | And (e1, e2) ->
-      (match (eval e1, eval e2) with
-           (Bool x, Bool y) -> Bool (x && y)
+let eval e = 
+  let rec do_eval e = 
+    match e with
+      Var _ -> raise NotClosed
+    | Not e ->
+        (match do_eval e with
+             Bool x -> Bool (not x)
+           | _ -> raise TypeMismatch
+        )
+    | Equal (e1, e2) ->
+        (match (do_eval e1, do_eval e2) with
+             (Int x, Int y) -> Bool (x = y)
+           | _ -> raise TypeMismatch
+        )
+    | If (e1, e2, e3) ->
+        (match do_eval e1 with
+            Bool true -> do_eval e2
+          | Bool false -> do_eval e3
           | _ -> raise TypeMismatch
-      )
-  | Or (e1, e2) ->
-      (match (eval e1, eval e2) with
-           (Bool x, Bool y) -> Bool (x || y)
-          | _ -> raise TypeMismatch
-      )
-  | Appl (e1, e2) ->
-      (match eval e1 with
-        Function (ident, fbody) ->
-          eval (subst ident (eval e2) fbody)
+        )
+    | Minus (e1, e2) -> 
+        (match (do_eval e1, do_eval e2) with
+             (Int x, Int y) -> Int (x - y)
+           | _ -> raise TypeMismatch
+        )
+    | Plus (e1, e2) -> 
+        (match (do_eval e1, do_eval e2) with
+             (Int x, Int y) -> Int (x + y)
+           | _ -> raise TypeMismatch
+        )
+    | And (e1, e2) ->
+        (match (do_eval e1, do_eval e2) with
+             (Bool x, Bool y) -> Bool (x && y)
+            | _ -> raise TypeMismatch
+        )
+    | Or (e1, e2) ->
+        (match (do_eval e1, do_eval e2) with
+             (Bool x, Bool y) -> Bool (x || y)
+            | _ -> raise TypeMismatch
+        )
+    | Appl (e1, e2) ->
+        (match do_eval e1 with
+          Function (ident, fbody) ->
+            do_eval (subst ident (do_eval e2) fbody)
 
-      | _ -> raise TypeMismatch
+        | _ -> raise TypeMismatch
 
-      )
+        )
 
-  | LetRec (f, x, e1, e2) ->
-      let inner = subst f (Function (x, (LetRec (f, x, e1, Appl (Var f, Var x))))) e1 in
-        eval (subst f (Function (x, inner)) e2)
-  | _ -> e
- else raise NotClosed
+    | LetRec (f, x, e1, e2) ->
+        let inner = subst f (Function (x, (LetRec (f, x, e1, Appl (Var f, Var x))))) e1 in
+          do_eval (subst f (Function (x, inner)) e2)
+    | _ -> e
+  in if check_closed e then do_eval e else raise NotClosed
 ;;
 
 
