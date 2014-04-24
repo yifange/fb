@@ -174,6 +174,7 @@ let rec checkClosure e =
 let replace t1 t2 = match (t1, t2) with
     (_, TInt) -> t2
   | (_, TBool) -> t2
+  | (TVar _, TArrow (_, _)) -> t2
   | (TVar x, TVar y) -> let xn = Char.code x.[0] and yn = Char.code y.[0] in if yn > xn then t2 else t1
   | _ -> t1
 
