@@ -145,14 +145,19 @@ let rec addEquations e =
          | _ -> []) in
       let ss = s1 @ e in
       let s2 =
-        union (List.map (fun x -> (t1, (snd x))) (List.filter (fun x -> (fst x) = t2) ss))
-          (List.map (fun x -> (snd x, t2)) (List.filter (fun x -> (fst x) = t1) ss))
+        let ss1 = List.map (fun x -> (t1, snd x)) (List.filter (fun x -> (fst x) = t2) ss) and
+            ss2 = List.map (fun x -> (snd x, t2)) (List.filter (fun x -> (fst x) = t1) ss) and
+            ss3 = List.map (fun x -> (t1, fst x)) (List.filter (fun x -> (snd x) = t2) ss) and
+            ss4 = List.map (fun x -> (fst x, t2)) (List.filter (fun x -> (snd x) = t1) ss) 
+        in
+            
+        union (union (union ss1 ss2) ss3) ss4
       in union (union (union s1 s2) [ (t1, t2) ]) (addEquations eqs)
   
 let rec computeClosure e =
   let c1 = addEquations e in
   let c2 = addEquations c1
-  in if (List.length c1) = (List.length c2) then c1 else computeClosure c2
+  in List.filter (fun x -> match x with (l, r) -> l != r) (if (List.length c1) = (List.length c2) then c1 else computeClosure c2)
   
 let rec checkClosure e =
   match e with
