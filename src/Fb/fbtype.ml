@@ -192,29 +192,12 @@ let rec substitute t es =
     | TBool -> t
     | TArrow (x, y) -> TArrow (substitute x es, substitute y es)
     | _ -> substituteTypeVar t es
-    (* | TVar _ -> substituteTypeVar t es *)
-
-(* let rec getType t es = *)
-(*   match es with *)
-(*   | [] -> raise TypeError *)
-(*   | (x, y) :: tail -> *)
-(*       if t = x then y else if t = y then x else getType t tail *)
 
 let rec getType t es =
   let t1 = substitute t es in
   let t2 = substitute t1 es in
   if t1 = t2 then t2 else getType t2 es
 
-(* let typecheck e = *)
-(*   let r = generateType [] e in *)
-(*   let t = fst r and eqs = snd r in *)
-(*     counter := 97; *)
-(*     if t = TInt || t = TBool then *)
-(*       t *)
-(*     else *)
-(*       let closure = computeClosure eqs *)
-(*       in if checkClosure closure then getType t closure else raise (TypeInferenceFailure "immediately inconsistent types") *)
-  
 let typecheck e =
   let r = generateType [] e in
   let t = fst r and eqs = snd r in
