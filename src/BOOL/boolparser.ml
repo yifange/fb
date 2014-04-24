@@ -10,11 +10,12 @@ type token =
   | EOEX
 
 open Parsing;;
+let _ = parse_error;;
 # 2 "src/BOOL/boolparser.mly"
 
 open Boolast;;
 
-# 18 "src/BOOL/boolparser.ml"
+# 19 "src/BOOL/boolparser.ml"
 let yytransl_const = [|
   257 (* AND *);
   258 (* OR *);
@@ -96,19 +97,19 @@ let yyact = [|
     Obj.repr(
 # 29 "src/BOOL/boolparser.mly"
             ( _1 )
-# 100 "src/BOOL/boolparser.ml"
+# 101 "src/BOOL/boolparser.ml"
                : Boolast.expr))
 ; (fun __caml_parser_env ->
     Obj.repr(
 # 34 "src/BOOL/boolparser.mly"
     ( True )
-# 106 "src/BOOL/boolparser.ml"
+# 107 "src/BOOL/boolparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     Obj.repr(
 # 36 "src/BOOL/boolparser.mly"
     ( False )
-# 112 "src/BOOL/boolparser.ml"
+# 113 "src/BOOL/boolparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -116,7 +117,7 @@ let yyact = [|
     Obj.repr(
 # 38 "src/BOOL/boolparser.mly"
     ( And(_1, _3) )
-# 120 "src/BOOL/boolparser.ml"
+# 121 "src/BOOL/boolparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -124,7 +125,7 @@ let yyact = [|
     Obj.repr(
 # 40 "src/BOOL/boolparser.mly"
     ( Or(_1, _3) )
-# 128 "src/BOOL/boolparser.ml"
+# 129 "src/BOOL/boolparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -132,21 +133,21 @@ let yyact = [|
     Obj.repr(
 # 42 "src/BOOL/boolparser.mly"
     ( Implies(_1, _3) )
-# 136 "src/BOOL/boolparser.ml"
+# 137 "src/BOOL/boolparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'expr) in
     Obj.repr(
 # 44 "src/BOOL/boolparser.mly"
     ( Not(_2) )
-# 143 "src/BOOL/boolparser.ml"
+# 144 "src/BOOL/boolparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 1 : 'expr) in
     Obj.repr(
 # 46 "src/BOOL/boolparser.mly"
     ( _2 )
-# 150 "src/BOOL/boolparser.ml"
+# 151 "src/BOOL/boolparser.ml"
                : 'expr))
 (* Entry main *)
 ; (fun __caml_parser_env -> raise (Parsing.YYexit (Parsing.peek_val __caml_parser_env 0)))
@@ -177,4 +178,4 @@ let main (lexfun : Lexing.lexbuf -> token) (lexbuf : Lexing.lexbuf) =
 
 
 
-# 181 "src/BOOL/boolparser.ml"
+# 182 "src/BOOL/boolparser.ml"

@@ -21,6 +21,7 @@ type token =
   | THEN
 
 open Parsing;;
+let _ = parse_error;;
 # 2 "src/FbExt/fbextparser.mly"
 
 open Fbextast;;
@@ -30,7 +31,7 @@ let rec mkappl e args =
     [] -> e
   | a::rest -> Appl(mkappl e rest, a)
 
-# 34 "src/FbExt/fbextparser.ml"
+# 35 "src/FbExt/fbextparser.ml"
 let yytransl_const = [|
   257 (* AND *);
   259 (* ELSE *);
@@ -181,14 +182,14 @@ let yyact = [|
     Obj.repr(
 # 61 "src/FbExt/fbextparser.mly"
             ( _1 )
-# 185 "src/FbExt/fbextparser.ml"
+# 186 "src/FbExt/fbextparser.ml"
                : Fbextast.expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'simple_expr) in
     Obj.repr(
 # 66 "src/FbExt/fbextparser.mly"
       ( _1 )
-# 192 "src/FbExt/fbextparser.ml"
+# 193 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'simple_expr) in
@@ -196,7 +197,7 @@ let yyact = [|
     Obj.repr(
 # 68 "src/FbExt/fbextparser.mly"
       ( mkappl _1 _2 )
-# 200 "src/FbExt/fbextparser.ml"
+# 201 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -204,7 +205,7 @@ let yyact = [|
     Obj.repr(
 # 70 "src/FbExt/fbextparser.mly"
       ( Plus(_1, _3) )
-# 208 "src/FbExt/fbextparser.ml"
+# 209 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -212,7 +213,7 @@ let yyact = [|
     Obj.repr(
 # 72 "src/FbExt/fbextparser.mly"
       ( Minus(_1, _3) )
-# 216 "src/FbExt/fbextparser.ml"
+# 217 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -220,7 +221,7 @@ let yyact = [|
     Obj.repr(
 # 74 "src/FbExt/fbextparser.mly"
       ( And(_1, _3) )
-# 224 "src/FbExt/fbextparser.ml"
+# 225 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -228,14 +229,14 @@ let yyact = [|
     Obj.repr(
 # 76 "src/FbExt/fbextparser.mly"
       ( Or(_1, _3) )
-# 232 "src/FbExt/fbextparser.ml"
+# 233 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'expr) in
     Obj.repr(
 # 78 "src/FbExt/fbextparser.mly"
       ( Not _2 )
-# 239 "src/FbExt/fbextparser.ml"
+# 240 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -243,7 +244,7 @@ let yyact = [|
     Obj.repr(
 # 80 "src/FbExt/fbextparser.mly"
       ( Equal(_1, _3) )
-# 247 "src/FbExt/fbextparser.ml"
+# 248 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 2 : 'ident_decl) in
@@ -251,7 +252,7 @@ let yyact = [|
     Obj.repr(
 # 82 "src/FbExt/fbextparser.mly"
       ( Function(_2, _4) )
-# 255 "src/FbExt/fbextparser.ml"
+# 256 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _3 = (Parsing.peek_val __caml_parser_env 5 : 'ident_decl) in
@@ -261,7 +262,7 @@ let yyact = [|
     Obj.repr(
 # 84 "src/FbExt/fbextparser.mly"
       ( LetRec(_3, _4, _6, _8) )
-# 265 "src/FbExt/fbextparser.ml"
+# 266 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 4 : 'expr) in
@@ -270,42 +271,42 @@ let yyact = [|
     Obj.repr(
 # 86 "src/FbExt/fbextparser.mly"
       ( If(_2, _4, _6) )
-# 274 "src/FbExt/fbextparser.ml"
+# 275 "src/FbExt/fbextparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : int) in
     Obj.repr(
 # 91 "src/FbExt/fbextparser.mly"
       ( Int _1 )
-# 281 "src/FbExt/fbextparser.ml"
+# 282 "src/FbExt/fbextparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : bool) in
     Obj.repr(
 # 93 "src/FbExt/fbextparser.mly"
       ( Bool _1 )
-# 288 "src/FbExt/fbextparser.ml"
+# 289 "src/FbExt/fbextparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'ident_usage) in
     Obj.repr(
 # 95 "src/FbExt/fbextparser.mly"
       ( _1 )
-# 295 "src/FbExt/fbextparser.ml"
+# 296 "src/FbExt/fbextparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 1 : 'expr) in
     Obj.repr(
 # 97 "src/FbExt/fbextparser.mly"
       ( _2 )
-# 302 "src/FbExt/fbextparser.ml"
+# 303 "src/FbExt/fbextparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'simple_expr) in
     Obj.repr(
 # 102 "src/FbExt/fbextparser.mly"
       ( [_1] )
-# 309 "src/FbExt/fbextparser.ml"
+# 310 "src/FbExt/fbextparser.ml"
                : 'simple_expr_list))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'simple_expr_list) in
@@ -313,21 +314,21 @@ let yyact = [|
     Obj.repr(
 # 104 "src/FbExt/fbextparser.mly"
       ( _2::_1 )
-# 317 "src/FbExt/fbextparser.ml"
+# 318 "src/FbExt/fbextparser.ml"
                : 'simple_expr_list))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'ident_decl) in
     Obj.repr(
 # 109 "src/FbExt/fbextparser.mly"
       ( Var _1 )
-# 324 "src/FbExt/fbextparser.ml"
+# 325 "src/FbExt/fbextparser.ml"
                : 'ident_usage))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : string) in
     Obj.repr(
 # 114 "src/FbExt/fbextparser.mly"
       ( Ident _1 )
-# 331 "src/FbExt/fbextparser.ml"
+# 332 "src/FbExt/fbextparser.ml"
                : 'ident_decl))
 (* Entry main *)
 ; (fun __caml_parser_env -> raise (Parsing.YYexit (Parsing.peek_val __caml_parser_env 0)))
@@ -354,4 +355,4 @@ let main (lexfun : Lexing.lexbuf -> token) (lexbuf : Lexing.lexbuf) =
 ;;
 # 118 "src/FbExt/fbextparser.mly"
 
-# 358 "src/FbExt/fbextparser.ml"
+# 359 "src/FbExt/fbextparser.ml"

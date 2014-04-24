@@ -21,6 +21,7 @@ type token =
   | THEN
 
 open Parsing;;
+let _ = parse_error;;
 # 2 "src/Fb/fbparser.mly"
 
 open Fbast;;
@@ -30,7 +31,7 @@ let rec mkappl e args =
     [] -> e
   | a::rest -> Appl(mkappl e rest, a)
 
-# 34 "src/Fb/fbparser.ml"
+# 35 "src/Fb/fbparser.ml"
 let yytransl_const = [|
   257 (* AND *);
   259 (* ELSE *);
@@ -181,14 +182,14 @@ let yyact = [|
     Obj.repr(
 # 61 "src/Fb/fbparser.mly"
             ( _1 )
-# 185 "src/Fb/fbparser.ml"
+# 186 "src/Fb/fbparser.ml"
                : Fbast.expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'simple_expr) in
     Obj.repr(
 # 66 "src/Fb/fbparser.mly"
       ( _1 )
-# 192 "src/Fb/fbparser.ml"
+# 193 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'simple_expr) in
@@ -196,7 +197,7 @@ let yyact = [|
     Obj.repr(
 # 68 "src/Fb/fbparser.mly"
       ( mkappl _1 _2 )
-# 200 "src/Fb/fbparser.ml"
+# 201 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -204,7 +205,7 @@ let yyact = [|
     Obj.repr(
 # 70 "src/Fb/fbparser.mly"
       ( Plus(_1, _3) )
-# 208 "src/Fb/fbparser.ml"
+# 209 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -212,7 +213,7 @@ let yyact = [|
     Obj.repr(
 # 72 "src/Fb/fbparser.mly"
       ( Minus(_1, _3) )
-# 216 "src/Fb/fbparser.ml"
+# 217 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -220,7 +221,7 @@ let yyact = [|
     Obj.repr(
 # 74 "src/Fb/fbparser.mly"
       ( And(_1, _3) )
-# 224 "src/Fb/fbparser.ml"
+# 225 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -228,14 +229,14 @@ let yyact = [|
     Obj.repr(
 # 76 "src/Fb/fbparser.mly"
       ( Or(_1, _3) )
-# 232 "src/Fb/fbparser.ml"
+# 233 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'expr) in
     Obj.repr(
 # 78 "src/Fb/fbparser.mly"
       ( Not _2 )
-# 239 "src/Fb/fbparser.ml"
+# 240 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -243,7 +244,7 @@ let yyact = [|
     Obj.repr(
 # 80 "src/Fb/fbparser.mly"
       ( Equal(_1, _3) )
-# 247 "src/Fb/fbparser.ml"
+# 248 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 2 : 'ident_decl) in
@@ -251,7 +252,7 @@ let yyact = [|
     Obj.repr(
 # 82 "src/Fb/fbparser.mly"
       ( Function(_2, _4) )
-# 255 "src/Fb/fbparser.ml"
+# 256 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _3 = (Parsing.peek_val __caml_parser_env 5 : 'ident_decl) in
@@ -261,7 +262,7 @@ let yyact = [|
     Obj.repr(
 # 84 "src/Fb/fbparser.mly"
       ( LetRec(_3, _4, _6, _8) )
-# 265 "src/Fb/fbparser.ml"
+# 266 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 4 : 'expr) in
@@ -270,42 +271,42 @@ let yyact = [|
     Obj.repr(
 # 86 "src/Fb/fbparser.mly"
       ( If(_2, _4, _6) )
-# 274 "src/Fb/fbparser.ml"
+# 275 "src/Fb/fbparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : int) in
     Obj.repr(
 # 91 "src/Fb/fbparser.mly"
       ( Int _1 )
-# 281 "src/Fb/fbparser.ml"
+# 282 "src/Fb/fbparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : bool) in
     Obj.repr(
 # 93 "src/Fb/fbparser.mly"
       ( Bool _1 )
-# 288 "src/Fb/fbparser.ml"
+# 289 "src/Fb/fbparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'ident_usage) in
     Obj.repr(
 # 95 "src/Fb/fbparser.mly"
       ( _1 )
-# 295 "src/Fb/fbparser.ml"
+# 296 "src/Fb/fbparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 1 : 'expr) in
     Obj.repr(
 # 97 "src/Fb/fbparser.mly"
       ( _2 )
-# 302 "src/Fb/fbparser.ml"
+# 303 "src/Fb/fbparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'simple_expr) in
     Obj.repr(
 # 102 "src/Fb/fbparser.mly"
       ( [_1] )
-# 309 "src/Fb/fbparser.ml"
+# 310 "src/Fb/fbparser.ml"
                : 'simple_expr_list))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'simple_expr_list) in
@@ -313,21 +314,21 @@ let yyact = [|
     Obj.repr(
 # 104 "src/Fb/fbparser.mly"
       ( _2::_1 )
-# 317 "src/Fb/fbparser.ml"
+# 318 "src/Fb/fbparser.ml"
                : 'simple_expr_list))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'ident_decl) in
     Obj.repr(
 # 109 "src/Fb/fbparser.mly"
       ( Var _1 )
-# 324 "src/Fb/fbparser.ml"
+# 325 "src/Fb/fbparser.ml"
                : 'ident_usage))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : string) in
     Obj.repr(
 # 114 "src/Fb/fbparser.mly"
       ( Ident _1 )
-# 331 "src/Fb/fbparser.ml"
+# 332 "src/Fb/fbparser.ml"
                : 'ident_decl))
 (* Entry main *)
 ; (fun __caml_parser_env -> raise (Parsing.YYexit (Parsing.peek_val __caml_parser_env 0)))
@@ -354,4 +355,4 @@ let main (lexfun : Lexing.lexbuf -> token) (lexbuf : Lexing.lexbuf) =
 ;;
 # 118 "src/Fb/fbparser.mly"
 
-# 358 "src/Fb/fbparser.ml"
+# 359 "src/Fb/fbparser.ml"

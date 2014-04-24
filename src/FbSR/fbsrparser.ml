@@ -28,6 +28,7 @@ type token =
   | THEN
 
 open Parsing;;
+let _ = parse_error;;
 # 2 "src/FbSR/fbsrparser.mly"
 
 open Fbsrast
@@ -37,7 +38,7 @@ let rec mkappl e args =
     [] -> e
   | a::rest -> Appl(mkappl e rest, a)
 
-# 41 "src/FbSR/fbsrparser.ml"
+# 42 "src/FbSR/fbsrparser.ml"
 let yytransl_const = [|
   257 (* AND *);
   259 (* DOT *);
@@ -259,14 +260,14 @@ let yyact = [|
     Obj.repr(
 # 70 "src/FbSR/fbsrparser.mly"
             ( _1 )
-# 263 "src/FbSR/fbsrparser.ml"
+# 264 "src/FbSR/fbsrparser.ml"
                : Fbsrast.expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'simple_expr) in
     Obj.repr(
 # 75 "src/FbSR/fbsrparser.mly"
       ( _1 )
-# 270 "src/FbSR/fbsrparser.ml"
+# 271 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'simple_expr) in
@@ -274,7 +275,7 @@ let yyact = [|
     Obj.repr(
 # 77 "src/FbSR/fbsrparser.mly"
       ( mkappl _1 _2 )
-# 278 "src/FbSR/fbsrparser.ml"
+# 279 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -282,7 +283,7 @@ let yyact = [|
     Obj.repr(
 # 79 "src/FbSR/fbsrparser.mly"
       ( Plus(_1, _3) )
-# 286 "src/FbSR/fbsrparser.ml"
+# 287 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -290,7 +291,7 @@ let yyact = [|
     Obj.repr(
 # 81 "src/FbSR/fbsrparser.mly"
       ( Minus(_1, _3) )
-# 294 "src/FbSR/fbsrparser.ml"
+# 295 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -298,7 +299,7 @@ let yyact = [|
     Obj.repr(
 # 83 "src/FbSR/fbsrparser.mly"
       ( And(_1, _3) )
-# 302 "src/FbSR/fbsrparser.ml"
+# 303 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -306,14 +307,14 @@ let yyact = [|
     Obj.repr(
 # 85 "src/FbSR/fbsrparser.mly"
       ( Or(_1, _3) )
-# 310 "src/FbSR/fbsrparser.ml"
+# 311 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'expr) in
     Obj.repr(
 # 87 "src/FbSR/fbsrparser.mly"
       ( Not _2 )
-# 317 "src/FbSR/fbsrparser.ml"
+# 318 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -321,7 +322,7 @@ let yyact = [|
     Obj.repr(
 # 89 "src/FbSR/fbsrparser.mly"
       ( Equal(_1, _3) )
-# 325 "src/FbSR/fbsrparser.ml"
+# 326 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 2 : 'ident_decl) in
@@ -329,7 +330,7 @@ let yyact = [|
     Obj.repr(
 # 91 "src/FbSR/fbsrparser.mly"
       ( Function(_2, _4) )
-# 333 "src/FbSR/fbsrparser.ml"
+# 334 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _3 = (Parsing.peek_val __caml_parser_env 5 : 'ident_decl) in
@@ -339,7 +340,7 @@ let yyact = [|
     Obj.repr(
 # 93 "src/FbSR/fbsrparser.mly"
       ( LetRec(_3, _4, _6, _8) )
-# 343 "src/FbSR/fbsrparser.ml"
+# 344 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 4 : 'expr) in
@@ -348,7 +349,7 @@ let yyact = [|
     Obj.repr(
 # 95 "src/FbSR/fbsrparser.mly"
       ( If(_2, _4, _6) )
-# 352 "src/FbSR/fbsrparser.ml"
+# 353 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 4 : 'ident_decl) in
@@ -357,14 +358,14 @@ let yyact = [|
     Obj.repr(
 # 97 "src/FbSR/fbsrparser.mly"
       ( Let(_2, _4, _6) )
-# 361 "src/FbSR/fbsrparser.ml"
+# 362 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'expr) in
     Obj.repr(
 # 99 "src/FbSR/fbsrparser.mly"
       ( Ref _2 )
-# 368 "src/FbSR/fbsrparser.ml"
+# 369 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -372,14 +373,14 @@ let yyact = [|
     Obj.repr(
 # 101 "src/FbSR/fbsrparser.mly"
       ( Set(_1, _3) )
-# 376 "src/FbSR/fbsrparser.ml"
+# 377 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'expr) in
     Obj.repr(
 # 103 "src/FbSR/fbsrparser.mly"
       ( Get _2 )
-# 383 "src/FbSR/fbsrparser.ml"
+# 384 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'expr) in
@@ -387,55 +388,55 @@ let yyact = [|
     Obj.repr(
 # 105 "src/FbSR/fbsrparser.mly"
       ( Select(_3, _1) )
-# 391 "src/FbSR/fbsrparser.ml"
+# 392 "src/FbSR/fbsrparser.ml"
                : 'expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : int) in
     Obj.repr(
 # 110 "src/FbSR/fbsrparser.mly"
       ( Int _1 )
-# 398 "src/FbSR/fbsrparser.ml"
+# 399 "src/FbSR/fbsrparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : bool) in
     Obj.repr(
 # 112 "src/FbSR/fbsrparser.mly"
       ( Bool _1 )
-# 405 "src/FbSR/fbsrparser.ml"
+# 406 "src/FbSR/fbsrparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'ident_usage) in
     Obj.repr(
 # 114 "src/FbSR/fbsrparser.mly"
       ( _1 )
-# 412 "src/FbSR/fbsrparser.ml"
+# 413 "src/FbSR/fbsrparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 1 : 'record_body) in
     Obj.repr(
 # 116 "src/FbSR/fbsrparser.mly"
       ( Record _2 )
-# 419 "src/FbSR/fbsrparser.ml"
+# 420 "src/FbSR/fbsrparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     Obj.repr(
 # 118 "src/FbSR/fbsrparser.mly"
       ( Record [] )
-# 425 "src/FbSR/fbsrparser.ml"
+# 426 "src/FbSR/fbsrparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 1 : 'expr) in
     Obj.repr(
 # 120 "src/FbSR/fbsrparser.mly"
       ( _2 )
-# 432 "src/FbSR/fbsrparser.ml"
+# 433 "src/FbSR/fbsrparser.ml"
                : 'simple_expr))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'simple_expr) in
     Obj.repr(
 # 125 "src/FbSR/fbsrparser.mly"
       ( [_1] )
-# 439 "src/FbSR/fbsrparser.ml"
+# 440 "src/FbSR/fbsrparser.ml"
                : 'simple_expr_list))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'simple_expr_list) in
@@ -443,7 +444,7 @@ let yyact = [|
     Obj.repr(
 # 127 "src/FbSR/fbsrparser.mly"
       ( _2::_1 )
-# 447 "src/FbSR/fbsrparser.ml"
+# 448 "src/FbSR/fbsrparser.ml"
                : 'simple_expr_list))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : 'label) in
@@ -451,7 +452,7 @@ let yyact = [|
     Obj.repr(
 # 132 "src/FbSR/fbsrparser.mly"
       ( [(_1, _3)] )
-# 455 "src/FbSR/fbsrparser.ml"
+# 456 "src/FbSR/fbsrparser.ml"
                : 'record_body))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 4 : 'label) in
@@ -460,28 +461,28 @@ let yyact = [|
     Obj.repr(
 # 134 "src/FbSR/fbsrparser.mly"
       ( (_1, _3)::_5 )
-# 464 "src/FbSR/fbsrparser.ml"
+# 465 "src/FbSR/fbsrparser.ml"
                : 'record_body))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : string) in
     Obj.repr(
 # 139 "src/FbSR/fbsrparser.mly"
       ( Lab _1 )
-# 471 "src/FbSR/fbsrparser.ml"
+# 472 "src/FbSR/fbsrparser.ml"
                : 'label))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : 'ident_decl) in
     Obj.repr(
 # 143 "src/FbSR/fbsrparser.mly"
       ( Var _1 )
-# 478 "src/FbSR/fbsrparser.ml"
+# 479 "src/FbSR/fbsrparser.ml"
                : 'ident_usage))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 0 : string) in
     Obj.repr(
 # 148 "src/FbSR/fbsrparser.mly"
       ( Ident _1 )
-# 485 "src/FbSR/fbsrparser.ml"
+# 486 "src/FbSR/fbsrparser.ml"
                : 'ident_decl))
 (* Entry main *)
 ; (fun __caml_parser_env -> raise (Parsing.YYexit (Parsing.peek_val __caml_parser_env 0)))
@@ -511,4 +512,4 @@ let main (lexfun : Lexing.lexbuf -> token) (lexbuf : Lexing.lexbuf) =
 
 
 
-# 515 "src/FbSR/fbsrparser.ml"
+# 516 "src/FbSR/fbsrparser.ml"
